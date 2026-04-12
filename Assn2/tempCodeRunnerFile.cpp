@@ -1,0 +1,10 @@
+    char name[50];
+        int rollno;
+        char degree[50];
+        char hostel[50];
+        float cgpa;
+        void addDetails();
+        void updateDetails();
+        void displaydetails();
+        void updatecgpa();
+        void updateHostel();

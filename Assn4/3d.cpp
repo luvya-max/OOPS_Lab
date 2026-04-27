@@ -1,5 +1,3 @@
-//Question: Q3d - Verify destructors do not have any return type
-
 #include <iostream>
 using namespace std;
 

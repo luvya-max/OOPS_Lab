@@ -1,5 +1,3 @@
-//Question: Q3e - Verify compiler generates default destructor when not specified
-
 #include <iostream>
 using namespace std;
 

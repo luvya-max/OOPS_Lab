@@ -1,73 +1,58 @@
-// Question 2: Practice protected access specifier in inheritance. In the base class declare a variable
-// which is protected and access it in the derived class.
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<string>
 using namespace std;
-// Base class
-class BankAccount {
+
+class BankAccount{
 protected:
-    // Protected member - can be accessed by derived classes
-    double balance;
-    string accountNumber;
+	double balance;
+	string accNo;
 public:
-    // Constructor
-    BankAccount(string accNum, double initialBalance) {
-        accountNumber = accNum;
-        balance = initialBalance;
-        cout << "Bank Account created with Account Number: " << accountNumber << endl;
-    }
-    void displayBalance() {
-        cout << "Account Balance: $" << balance << endl;
-    }
+	BankAccount(string a,double b){
+		accNo=a;
+		balance=b;
+		cout<<"created "<<accNo<<endl;
+	}
+	void showBal(){
+		cout<<"bal="<<balance<<endl;
+	}
 };
-// Derived class
-class SavingsAccount : public BankAccount {
-private:
-    double interestRate;
+
+class Savings:public BankAccount{
+	double rate;
 public:
-    // Constructor
-    SavingsAccount(string accNum, double initialBalance, double rate) 
-        : BankAccount(accNum, initialBalance), interestRate(rate) {
-        cout << "Savings Account created" << endl;
-    }
-    // Accessing protected members from base class
-    void addInterest() {
-        double interest = balance * interestRate / 100;  // Accessing protected 'balance'
-        balance += interest;  // Modifying protected 'balance'
-        cout << "Interest added: $" << interest << endl;
-        cout << "New Balance: $" << balance << endl;
-    }
-    void deposit(double amount) {
-        balance += amount;  // Accessing and modifying protected 'balance'
-        cout << "Deposited: $" << amount << endl;
-        cout << "Current Balance: $" << balance << endl;
-    }
-    void withdraw(double amount) {
-        if (balance >= amount) {
-            balance -= amount;  // Accessing and modifying protected 'balance'
-            cout << "Withdrawn: $" << amount << endl;
-            cout << "Remaining Balance: $" << balance << endl;
-        } else {
-            cout << "Insufficient balance!" << endl;
-        }
-    }
-    void displayAccountInfo() {
-        cout << "\n--- Savings Account Information ---" << endl;
-        cout << "Account Number: " << accountNumber << endl;  // Accessing protected 'accountNumber'
-        cout << "Balance: $" << balance << endl;  // Accessing protected 'balance'
-        cout << "Interest Rate: " << interestRate << "%" << endl;
-    }
+	Savings(string a,double b,double r):BankAccount(a,b){
+		rate=r;
+	}
+	void dep(double x){
+		balance+=x;
+		cout<<"dep "<<x<<endl;
+	}
+	void wd(double x){
+		if(balance>=x){
+			balance-=x;
+			cout<<"wd "<<x<<endl;
+		}
+		else{
+			cout<<"low bal"<<endl;
+		}
+	}
+	void addInt(){
+		double t=balance*rate/100;
+		balance+=t;
+		cout<<"int "<<t<<endl;
+	}
+	void show(){
+		cout<<accNo<<endl;
+		cout<<balance<<endl<<rate<<endl;
+	}
 };
-int main() {
-    // Create a savings account
-    SavingsAccount myAccount("SA123456", 1000.0, 5.0);
-    cout << "\n--- Initial Account Status ---" << endl;
-    myAccount.displayBalance();
-    cout << "\n--- Performing Transactions ---" << endl;
-    myAccount.deposit(500.0);
-    myAccount.withdraw(200.0);
-    myAccount.addInterest();
-    cout << "\n--- Final Account Status ---" << endl;
-    myAccount.displayAccountInfo();
-    return 0;
+
+int main(){
+	Savings s("S1",1000,5);
+	s.showBal();
+	s.dep(500);
+	s.wd(200);
+	s.addInt();
+	s.show();
+	return 0;
 }

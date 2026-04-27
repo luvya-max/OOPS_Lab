@@ -1,293 +1,174 @@
-// Question 7: Multiple Inheritance - Car Dashboard System
-#include <iostream>
-#include <iomanip>
+#include<iostream>
+#include<iomanip>
 using namespace std;
 
-// First base class: Speedometer
-class Speedometer {
+class Speedometer{
 protected:
-    double speed;  // in km/h
-    double maxSpeed;
-    
+	double speed,maxSpeed;
 public:
-    // Constructor
-    Speedometer() {
-        speed = 0.0;
-        maxSpeed = 200.0;
-        cout << "Speedometer initialized" << endl;
-    }
-    
-    // Set current speed
-    void setSpeed(double s) {
-        if (s >= 0 && s <= maxSpeed) {
-            speed = s;
-        } else if (s > maxSpeed) {
-            speed = maxSpeed;
-            cout << "Speed limited to maximum: " << maxSpeed << " km/h" << endl;
-        } else {
-            speed = 0;
-        }
-    }
-    
-    // Get current speed
-    double getSpeed() const {
-        return speed;
-    }
-    
-    // Display speed
-    void displaySpeed() {
-        cout << fixed << setprecision(1);
-        cout << "Speed: " << speed << " km/h";
-        if (speed > 120) {
-            cout << " [SPEEDING!]";
-        }
-        cout << endl;
-    }
-    
-    // Destructor
-    ~Speedometer() {
-        cout << "Speedometer destroyed" << endl;
-    }
+	Speedometer(){
+		speed=0;
+		maxSpeed=200;
+		cout<<"Speedo init"<<endl;
+	}
+	void setSpeed(double s){
+		if(s>=0 && s<=maxSpeed) speed=s;
+		else if(s>maxSpeed){
+			speed=maxSpeed;
+			cout<<"limit "<<maxSpeed<<endl;
+		}
+		else speed=0;
+	}
+	double getSpeed(){return speed;}
+	void showSpeed(){
+		cout<<fixed<<setprecision(1);
+		cout<<"Speed "<<speed;
+		if(speed>120) cout<<" high";
+		cout<<endl;
+	}
+	~Speedometer(){
+		cout<<"Speedo dtor"<<endl;
+	}
 };
 
-// Second base class: FuelGauge
-class FuelGauge {
+class FuelGauge{
 protected:
-    double fuelLevel;  // in liters
-    double tankCapacity;
-    
+	double fuel,cap;
 public:
-    // Constructor
-    FuelGauge() {
-        fuelLevel = 50.0;
-        tankCapacity = 60.0;
-        cout << "Fuel Gauge initialized" << endl;
-    }
-    
-    // Set fuel level
-    void setFuelLevel(double fuel) {
-        if (fuel >= 0 && fuel <= tankCapacity) {
-            fuelLevel = fuel;
-        } else if (fuel > tankCapacity) {
-            fuelLevel = tankCapacity;
-        } else {
-            fuelLevel = 0;
-        }
-    }
-    
-    // Consume fuel (simulating driving)
-    void consumeFuel(double amount) {
-        if (fuelLevel >= amount) {
-            fuelLevel -= amount;
-        } else {
-            fuelLevel = 0;
-        }
-    }
-    
-    // Refuel
-    void refuel(double amount) {
-        if (fuelLevel + amount <= tankCapacity) {
-            fuelLevel += amount;
-            cout << "Refueled " << amount << " liters" << endl;
-        } else {
-            cout << "Tank full! Added " << (tankCapacity - fuelLevel) << " liters" << endl;
-            fuelLevel = tankCapacity;
-        }
-    }
-    
-    // Get fuel level
-    double getFuelLevel() const {
-        return fuelLevel;
-    }
-    
-    // Display fuel level
-    void displayFuel() {
-        cout << fixed << setprecision(1);
-        cout << "Fuel Level: " << fuelLevel << "/" << tankCapacity << " liters";
-        
-        double fuelPercentage = (fuelLevel / tankCapacity) * 100;
-        if (fuelPercentage < 15) {
-            cout << " [LOW FUEL WARNING!]";
-        }
-        cout << " (" << fuelPercentage << "%)" << endl;
-    }
-    
-    // Destructor
-    ~FuelGauge() {
-        cout << "Fuel Gauge destroyed" << endl;
-    }
+	FuelGauge(){
+		fuel=50;
+		cap=60;
+		cout<<"Fuel init"<<endl;
+	}
+	void setFuel(double f){
+		if(f>=0 && f<=cap) fuel=f;
+		else if(f>cap) fuel=cap;
+		else fuel=0;
+	}
+	void useFuel(double x){
+		if(fuel>=x) fuel-=x;
+		else fuel=0;
+	}
+	void refuel(double x){
+		if(fuel+x<=cap){
+			fuel+=x;
+			cout<<"refuel "<<x<<endl;
+		}else{
+			cout<<"full "<<cap-fuel<<endl;
+			fuel=cap;
+		}
+	}
+	double getFuel(){return fuel;}
+	void showFuel(){
+		cout<<fixed<<setprecision(1);
+		cout<<"Fuel "<<fuel<<"/"<<cap;
+		double p=(fuel/cap)*100;
+		if(p<15) cout<<" low";
+		cout<<" ("<<p<<"%)"<<endl;
+	}
+	~FuelGauge(){
+		cout<<"Fuel dtor"<<endl;
+	}
 };
 
-// Third base class: Thermometer
-class Thermometer {
+class Thermometer{
 protected:
-    double temperature;  // in Celsius
-    double normalTemp;
-    double maxTemp;
-    
+	double temp,norm,maxT;
 public:
-    // Constructor
-    Thermometer() {
-        temperature = 90.0;
-        normalTemp = 90.0;
-        maxTemp = 120.0;
-        cout << "Thermometer initialized" << endl;
-    }
-    
-    // Set temperature
-    void setTemperature(double temp) {
-        temperature = temp;
-    }
-    
-    // Update temperature based on engine activity
-    void updateTemperature(double speedFactor) {
-        // Temperature increases with speed
-        temperature = normalTemp + (speedFactor * 0.15);
-        if (temperature > maxTemp) {
-            temperature = maxTemp;
-        }
-    }
-    
-    // Get temperature
-    double getTemperature() const {
-        return temperature;
-    }
-    
-    // Display temperature
-    void displayTemperature() {
-        cout << fixed << setprecision(1);
-        cout << "Engine Temperature: " << temperature << "°C";
-        
-        if (temperature > 110) {
-            cout << " [OVERHEATING WARNING!]";
-        } else if (temperature > 100) {
-            cout << " [HOT]";
-        }
-        cout << endl;
-    }
-    
-    // Destructor
-    ~Thermometer() {
-        cout << "Thermometer destroyed" << endl;
-    }
+	Thermometer(){
+		temp=90;
+		norm=90;
+		maxT=120;
+		cout<<"Temp init"<<endl;
+	}
+	void setTemp(double t){temp=t;}
+	void update(double s){
+		temp=norm+(s*0.15);
+		if(temp>maxT) temp=maxT;
+	}
+	double getTemp(){return temp;}
+	void showTemp(){
+		cout<<fixed<<setprecision(1);
+		cout<<"Temp "<<temp;
+		if(temp>110) cout<<" over";
+		else if(temp>100) cout<<" hot";
+		cout<<endl;
+	}
+	~Thermometer(){
+		cout<<"Temp dtor"<<endl;
+	}
 };
 
-// Derived class using MULTIPLE INHERITANCE
-class CarDashboard : public Speedometer, public FuelGauge, public Thermometer {
-private:
-    string carModel;
-    bool engineOn;
-    
+class CarDash:public Speedometer,public FuelGauge,public Thermometer{
+	string model;
+	bool on;
 public:
-    // Constructor
-    CarDashboard(string model) : Speedometer(), FuelGauge(), Thermometer() {
-        carModel = model;
-        engineOn = false;
-        cout << "Car Dashboard created for: " << carModel << endl;
-    }
-    
-    // Start engine
-    void startEngine() {
-        if (!engineOn) {
-            engineOn = true;
-            cout << "\n=== ENGINE STARTED ===" << endl;
-            cout << carModel << " is ready to drive!" << endl;
-        } else {
-            cout << "Engine is already running!" << endl;
-        }
-    }
-    
-    // Stop engine
-    void stopEngine() {
-        if (engineOn) {
-            engineOn = false;
-            setSpeed(0);
-            cout << "\n=== ENGINE STOPPED ===" << endl;
-        }
-    }
-    
-    // Simulate driving
-    void drive(double newSpeed, double duration) {
-        if (!engineOn) {
-            cout << "Please start the engine first!" << endl;
-            return;
-        }
-        
-        setSpeed(newSpeed);
-        
-        // Fuel consumption (approximate: 0.1 liter per km at 60 km/h)
-        double distance = (newSpeed * duration) / 60.0;  // duration in minutes
-        double fuelConsumed = distance * 0.08;
-        consumeFuel(fuelConsumed);
-        
-        // Update temperature based on speed
-        updateTemperature(newSpeed);
-        
-        cout << "\nDriving for " << duration << " minutes at " << newSpeed << " km/h" << endl;
-        cout << "Distance covered: " << distance << " km" << endl;
-        cout << "Fuel consumed: " << fuelConsumed << " liters" << endl;
-    }
-    
-    // Display complete dashboard
-    void displayDashboard() {
-        cout << "\n========================================" << endl;
-        cout << "      " << carModel << " - DASHBOARD" << endl;
-        cout << "========================================" << endl;
-        cout << "Engine Status: " << (engineOn ? "ON" : "OFF") << endl;
-        displaySpeed();
-        displayFuel();
-        displayTemperature();
-        cout << "========================================" << endl;
-    }
-    
-    // Destructor
-    ~CarDashboard() {
-        cout << "Car Dashboard destroyed for: " << carModel << endl;
-    }
+	CarDash(string m){
+		model=m;
+		on=false;
+		cout<<"Dash "<<model<<endl;
+	}
+	void start(){
+		if(!on){
+			on=true;
+			cout<<"start"<<endl;
+		}else cout<<"already"<<endl;
+	}
+	void stop(){
+		if(on){
+			on=false;
+			setSpeed(0);
+			cout<<"stop"<<endl;
+		}
+	}
+	void drive(double sp,double t){
+		if(!on){
+			cout<<"start first"<<endl;
+			return;
+		}
+		setSpeed(sp);
+		double dist=(sp*t)/60.0;
+		double used=dist*0.08;
+		useFuel(used);
+		update(sp);
+		cout<<"drive "<<sp<<" "<<t<<endl;
+		cout<<"dist "<<dist<<" fuel "<<used<<endl;
+	}
+	void show(){
+		cout<<"\n"<<model<<endl;
+		cout<<(on?"ON":"OFF")<<endl;
+		showSpeed();
+		showFuel();
+		showTemp();
+	}
+	~CarDash(){
+		cout<<"Dash dtor "<<model<<endl;
+	}
 };
 
-int main() {
-    cout << "===== CAR DASHBOARD SIMULATION =====" << endl;
-    cout << "\n--- Creating Car Dashboard (Multiple Inheritance) ---" << endl;
-    
-    CarDashboard myCar("Tesla Model S");
-    
-    cout << "\n--- Initial Dashboard Status ---" << endl;
-    myCar.displayDashboard();
-    
-    // Start engine
-    myCar.startEngine();
-    myCar.displayDashboard();
-    
-    // Simulate driving scenarios
-    cout << "\n--- Scenario 1: City Driving ---" << endl;
-    myCar.drive(60, 15);  // 60 km/h for 15 minutes
-    myCar.displayDashboard();
-    
-    cout << "\n--- Scenario 2: Highway Driving ---" << endl;
-    myCar.drive(120, 30);  // 120 km/h for 30 minutes
-    myCar.displayDashboard();
-    
-    cout << "\n--- Scenario 3: High Speed (Testing Limits) ---" << endl;
-    myCar.drive(180, 10);  // 180 km/h for 10 minutes
-    myCar.displayDashboard();
-    
-    // Refuel
-    cout << "\n--- Refueling ---" << endl;
-    myCar.refuel(30);
-    myCar.displayDashboard();
-    
-    // Stop engine
-    myCar.stopEngine();
-    myCar.displayDashboard();
-    
-    cout << "\n===== MULTIPLE INHERITANCE BENEFITS =====" << endl;
-    cout << "1. CarDashboard inherits from THREE base classes simultaneously" << endl;
-    cout << "2. Each component (Speed, Fuel, Temperature) is independent and reusable" << endl;
-    cout << "3. CarDashboard combines all functionalities in one unified interface" << endl;
-    cout << "4. Easy to maintain - each gauge can be modified independently" << endl;
-    cout << "5. Demonstrates real-world use case of multiple inheritance" << endl;
-    
-    cout << "\n--- Program Ending ---" << endl;
-    return 0;
+int main(){
+	cout<<"Dashboard"<<endl;
+
+	CarDash c("Tesla");
+	c.show();
+
+	c.start();
+	c.show();
+
+	c.drive(60,15);
+	c.show();
+
+	c.drive(120,30);
+	c.show();
+
+	c.drive(180,10);
+	c.show();
+
+	c.refuel(30);
+	c.show();
+
+	c.stop();
+	c.show();
+
+	return 0;
 }

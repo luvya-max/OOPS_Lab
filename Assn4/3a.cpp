@@ -1,5 +1,3 @@
-//Question: Q3a - Verify destructor name begins with tilde (~) and matches class name
-
 #include <iostream>
 using namespace std;
 

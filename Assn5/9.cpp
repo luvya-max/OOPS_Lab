@@ -1,313 +1,178 @@
-// Question 9: Multilevel Inheritance - Vehicle Fleet Management
-#include <iostream>
-#include <string>
-#include <iomanip>
+#include<iostream>
+#include<string>
+#include<iomanip>
 using namespace std;
 
-// Level 1: Base class - Vehicle
-class Vehicle {
+class Vehicle{
 protected:
-    string make;
-    string model;
-    int year;
-    double mileage;
-    
+	string make,model;
+	int year;
+	double km;
 public:
-    // Constructor
-    Vehicle() {
-        make = "Unknown";
-        model = "Unknown";
-        year = 2020;
-        mileage = 0.0;
-        cout << "Vehicle default constructor called" << endl;
-    }
-    
-    Vehicle(string mk, string mdl, int yr) {
-        make = mk;
-        model = mdl;
-        year = yr;
-        mileage = 0.0;
-        cout << "Vehicle created: " << year << " " << make << " " << model << endl;
-    }
-    
-    // Display vehicle information
-    void displayVehicleInfo() {
-        cout << "Make: " << make << endl;
-        cout << "Model: " << model << endl;
-        cout << "Year: " << year << endl;
-        cout << fixed << setprecision(1);
-        cout << "Mileage: " << mileage << " km" << endl;
-    }
-    
-    // Add mileage
-    void addMileage(double km) {
-        mileage += km;
-        cout << "Added " << km << " km to mileage. Total: " << mileage << " km" << endl;
-    }
-    
-    // Getters
-    string getMake() const { return make; }
-    string getModel() const { return model; }
-    int getYear() const { return year; }
-    double getMileage() const { return mileage; }
-    
-    // Calculate vehicle age
-    int calculateAge() {
-        return 2024 - year;
-    }
-    
-    // Virtual destructor
-    virtual ~Vehicle() {
-        cout << "Vehicle destroyed: " << make << " " << model << endl;
-    }
+	Vehicle(){
+		make="Unknown";
+		model="Unknown";
+		year=2020;
+		km=0;
+		cout<<"Vehicle default"<<endl;
+	}
+	Vehicle(string m,string mo,int y){
+		make=m;
+		model=mo;
+		year=y;
+		km=0;
+		cout<<"Vehicle "<<make<<" "<<model<<endl;
+	}
+	void show(){
+		cout<<make<<endl<<model<<endl<<year<<endl;
+		cout<<fixed<<setprecision(1);
+		cout<<"Km "<<km<<endl;
+	}
+	void addKm(double x){
+		km+=x;
+		cout<<"add "<<x<<" total "<<km<<endl;
+	}
+	int age(){
+		return 2024-year;
+	}
+	~Vehicle(){
+		cout<<"Vehicle dtor "<<make<<endl;
+	}
 };
 
-// Level 2: Derived class from Vehicle - Truck
-class Truck : public Vehicle {
+class Truck:public Vehicle{
 protected:
-    double loadCapacity;  // in tons
-    double currentLoad;
-    
+	double cap,load;
 public:
-    // Constructor
-    Truck() : Vehicle() {
-        loadCapacity = 0.0;
-        currentLoad = 0.0;
-        cout << "Truck default constructor called" << endl;
-    }
-    
-    Truck(string mk, string mdl, int yr, double capacity) : Vehicle(mk, mdl, yr) {
-        loadCapacity = capacity;
-        currentLoad = 0.0;
-        cout << "Truck created with load capacity: " << capacity << " tons" << endl;
-    }
-    
-    // Display truck information
-    void displayTruckInfo() {
-        cout << "\n=== TRUCK INFORMATION ===" << endl;
-        displayVehicleInfo();  // Call base class method
-        cout << fixed << setprecision(2);
-        cout << "Load Capacity: " << loadCapacity << " tons" << endl;
-        cout << "Current Load: " << currentLoad << " tons" << endl;
-        cout << "Available Capacity: " << (loadCapacity - currentLoad) << " tons" << endl;
-    }
-    
-    // Load cargo
-    void loadCargo(double weight) {
-        if (currentLoad + weight <= loadCapacity) {
-            currentLoad += weight;
-            cout << "Loaded " << weight << " tons. Current load: " << currentLoad << " tons" << endl;
-        } else {
-            cout << "Cannot load " << weight << " tons. Exceeds capacity!" << endl;
-            cout << "Available space: " << (loadCapacity - currentLoad) << " tons" << endl;
-        }
-    }
-    
-    // Unload cargo
-    void unloadCargo(double weight) {
-        if (currentLoad >= weight) {
-            currentLoad -= weight;
-            cout << "Unloaded " << weight << " tons. Remaining load: " << currentLoad << " tons" << endl;
-        } else {
-            cout << "Cannot unload " << weight << " tons. Current load is only " << currentLoad << " tons" << endl;
-        }
-    }
-    
-    // Check if truck is at full capacity
-    bool isFullyLoaded() {
-        return currentLoad >= loadCapacity;
-    }
-    
-    // Getters
-    double getLoadCapacity() const { return loadCapacity; }
-    double getCurrentLoad() const { return currentLoad; }
-    
-    // Destructor
-    ~Truck() {
-        cout << "Truck destroyed with capacity: " << loadCapacity << " tons" << endl;
-    }
+	Truck():Vehicle(){
+		cap=0;load=0;
+		cout<<"Truck default"<<endl;
+	}
+	Truck(string m,string mo,int y,double c):Vehicle(m,mo,y){
+		cap=c;
+		load=0;
+		cout<<"Truck "<<cap<<endl;
+	}
+	void show(){
+		cout<<"\nTruck"<<endl;
+		Vehicle::show();
+		cout<<"Cap "<<cap<<" Load "<<load<<endl;
+	}
+	void loadC(double w){
+		if(load+w<=cap){
+			load+=w;
+			cout<<"load "<<w<<endl;
+		}else{
+			cout<<"exceed "<<cap-load<<endl;
+		}
+	}
+	void unload(double w){
+		if(load>=w){
+			load-=w;
+			cout<<"unload "<<w<<endl;
+		}else cout<<"low load"<<endl;
+	}
+	~Truck(){
+		cout<<"Truck dtor "<<cap<<endl;
+	}
 };
 
-// Level 3: Derived class from Truck - RefrigeratedTruck
-class RefrigeratedTruck : public Truck {
-private:
-    double temperatureControl;  // in Celsius
-    double minTemperature;
-    double maxTemperature;
-    bool coolingSystemOn;
-    
+class RefTruck:public Truck{
+	double temp,minT,maxT;
+	bool on;
 public:
-    // Constructor
-    RefrigeratedTruck() : Truck() {
-        temperatureControl = 5.0;
-        minTemperature = -20.0;
-        maxTemperature = 20.0;
-        coolingSystemOn = false;
-        cout << "RefrigeratedTruck default constructor called" << endl;
-    }
-    
-    RefrigeratedTruck(string mk, string mdl, int yr, double capacity, double temp) 
-        : Truck(mk, mdl, yr, capacity) {
-        temperatureControl = temp;
-        minTemperature = -20.0;
-        maxTemperature = 20.0;
-        coolingSystemOn = false;
-        cout << "Refrigerated Truck created with temperature control: " << temp << "°C" << endl;
-    }
-    
-    // Display refrigerated truck information
-    void displayRefrigeratedTruckInfo() {
-        cout << "\n=== REFRIGERATED TRUCK INFORMATION ===" << endl;
-        displayVehicleInfo();  // From Vehicle (Level 1)
-        cout << fixed << setprecision(2);
-        cout << "Load Capacity: " << loadCapacity << " tons" << endl;  // From Truck (Level 2)
-        cout << "Current Load: " << currentLoad << " tons" << endl;
-        cout << "Temperature Setting: " << temperatureControl << "°C" << endl;
-        cout << "Temperature Range: " << minTemperature << "°C to " << maxTemperature << "°C" << endl;
-        cout << "Cooling System: " << (coolingSystemOn ? "ON" : "OFF") << endl;
-    }
-    
-    // Turn cooling system on
-    void startCooling() {
-        if (!coolingSystemOn) {
-            coolingSystemOn = true;
-            cout << "Cooling system started. Maintaining temperature at " << temperatureControl << "°C" << endl;
-        } else {
-            cout << "Cooling system is already running." << endl;
-        }
-    }
-    
-    // Turn cooling system off
-    void stopCooling() {
-        if (coolingSystemOn) {
-            coolingSystemOn = false;
-            cout << "Cooling system stopped." << endl;
-        } else {
-            cout << "Cooling system is already off." << endl;
-        }
-    }
-    
-    // Set temperature
-    void setTemperature(double temp) {
-        if (temp >= minTemperature && temp <= maxTemperature) {
-            temperatureControl = temp;
-            cout << "Temperature set to " << temperatureControl << "°C" << endl;
-        } else {
-            cout << "Temperature out of range! Must be between " << minTemperature 
-                 << "°C and " << maxTemperature << "°C" << endl;
-        }
-    }
-    
-    // Load perishable cargo
-    void loadPerishableCargo(double weight, string cargoType) {
-        if (!coolingSystemOn) {
-            cout << "WARNING: Cooling system is OFF! Start cooling before loading perishables." << endl;
-        }
-        
-        loadCargo(weight);  // Call Truck's method (Level 2)
-        cout << "Loaded perishable cargo: " << cargoType << endl;
-        
-        if (coolingSystemOn) {
-            cout << "Cargo is being kept at " << temperatureControl << "°C" << endl;
-        }
-    }
-    
-    // Check if suitable for cargo type
-    bool isSuitableForCargo(string cargoType) {
-        if (cargoType == "Frozen Food" && temperatureControl <= 0) {
-            return true;
-        } else if (cargoType == "Fresh Produce" && temperatureControl > 0 && temperatureControl <= 10) {
-            return true;
-        } else if (cargoType == "Dairy" && temperatureControl >= 2 && temperatureControl <= 8) {
-            return true;
-        }
-        return false;
-    }
-    
-    // Getters
-    double getTemperature() const { return temperatureControl; }
-    bool isCoolingOn() const { return coolingSystemOn; }
-    
-    // Destructor
-    ~RefrigeratedTruck() {
-        cout << "Refrigerated Truck destroyed (Temp: " << temperatureControl << "°C)" << endl;
-    }
+	RefTruck():Truck(){
+		temp=5;
+		minT=-20;
+		maxT=20;
+		on=false;
+		cout<<"Ref default"<<endl;
+	}
+	RefTruck(string m,string mo,int y,double c,double t):Truck(m,mo,y,c){
+		temp=t;
+		minT=-20;
+		maxT=20;
+		on=false;
+		cout<<"Ref "<<temp<<endl;
+	}
+	void show(){
+		cout<<"\nRefTruck"<<endl;
+		Vehicle::show();
+		cout<<"Cap "<<cap<<" Load "<<load<<endl;
+		cout<<"Temp "<<temp<<" "<<(on?"ON":"OFF")<<endl;
+	}
+	void start(){
+		if(!on){
+			on=true;
+			cout<<"cool on"<<endl;
+		}
+	}
+	void stop(){
+		if(on){
+			on=false;
+			cout<<"cool off"<<endl;
+		}
+	}
+	void setT(double t){
+		if(t>=minT && t<=maxT){
+			temp=t;
+			cout<<"set "<<temp<<endl;
+		}else cout<<"range err"<<endl;
+	}
+	void loadP(double w,string type){
+		if(!on) cout<<"warn off"<<endl;
+		loadC(w);
+		cout<<"cargo "<<type<<endl;
+	}
+	bool ok(string t){
+		if(t=="Frozen" && temp<=0) return true;
+		if(t=="Fresh" && temp>0 && temp<=10) return true;
+		if(t=="Dairy" && temp>=2 && temp<=8) return true;
+		return false;
+	}
+	~RefTruck(){
+		cout<<"Ref dtor "<<temp<<endl;
+	}
 };
 
-int main() {
-    cout << "===== VEHICLE FLEET MANAGEMENT SYSTEM =====" << endl;
-    cout << "\n--- MULTILEVEL INHERITANCE DEMONSTRATION ---" << endl;
-    
-    // Level 1: Create a basic Vehicle
-    cout << "\n--- Creating Base Vehicle (Level 1) ---" << endl;
-    Vehicle vehicle1("Honda", "Civic", 2022);
-    vehicle1.displayVehicleInfo();
-    vehicle1.addMileage(5000);
-    cout << "Vehicle age: " << vehicle1.calculateAge() << " years" << endl;
-    
-    // Level 2: Create a Truck (inherits from Vehicle)
-    cout << "\n--- Creating Truck (Level 2) ---" << endl;
-    Truck truck1("Ford", "F-150", 2023, 3.5);
-    truck1.displayTruckInfo();
-    
-    cout << "\n--- Loading Cargo into Truck ---" << endl;
-    truck1.loadCargo(1.5);
-    truck1.loadCargo(1.0);
-    truck1.loadCargo(1.5);  // This will exceed capacity
-    truck1.addMileage(150);
-    truck1.displayTruckInfo();
-    
-    // Level 3: Create a Refrigerated Truck (inherits from Truck -> Vehicle)
-    cout << "\n--- Creating Refrigerated Truck (Level 3) ---" << endl;
-    RefrigeratedTruck refTruck1("Volvo", "FH16", 2024, 15.0, 5.0);
-    refTruck1.displayRefrigeratedTruckInfo();
-    
-    cout << "\n--- Operating Refrigerated Truck ---" << endl;
-    refTruck1.startCooling();
-    refTruck1.setTemperature(3.0);
-    
-    cout << "\n--- Loading Perishable Cargo ---" << endl;
-    refTruck1.loadPerishableCargo(5.0, "Fresh Vegetables");
-    refTruck1.loadPerishableCargo(4.0, "Dairy Products");
-    refTruck1.loadPerishableCargo(3.5, "Fruits");
-    
-    cout << "\n--- Checking Cargo Suitability ---" << endl;
-    cout << "Suitable for Dairy? " << (refTruck1.isSuitableForCargo("Dairy") ? "Yes" : "No") << endl;
-    cout << "Suitable for Frozen Food? " << (refTruck1.isSuitableForCargo("Frozen Food") ? "Yes" : "No") << endl;
-    
-    refTruck1.addMileage(350);
-    refTruck1.displayRefrigeratedTruckInfo();
-    
-    cout << "\n--- Delivering Cargo ---" << endl;
-    refTruck1.unloadCargo(5.0);
-    refTruck1.unloadCargo(4.0);
-    refTruck1.stopCooling();
-    refTruck1.displayRefrigeratedTruckInfo();
-    
-    // Another refrigerated truck for frozen goods
-    cout << "\n--- Creating Frozen Food Transport Truck ---" << endl;
-    RefrigeratedTruck refTruck2("Mercedes", "Actros", 2024, 20.0, -18.0);
-    refTruck2.startCooling();
-    refTruck2.loadPerishableCargo(10.0, "Frozen Meat");
-    refTruck2.loadPerishableCargo(8.0, "Ice Cream");
-    refTruck2.displayRefrigeratedTruckInfo();
-    
-    cout << "\n===== MULTILEVEL INHERITANCE STRUCTURE =====" << endl;
-    cout << "Level 1: Vehicle (make, model, year, mileage)" << endl;
-    cout << "   |" << endl;
-    cout << "   v" << endl;
-    cout << "Level 2: Truck (inherits Vehicle + adds loadCapacity, currentLoad)" << endl;
-    cout << "   |" << endl;
-    cout << "   v" << endl;
-    cout << "Level 3: RefrigeratedTruck (inherits Truck + adds temperatureControl, cooling)" << endl;
-    
-    cout << "\n===== KEY BENEFITS =====" << endl;
-    cout << "1. RefrigeratedTruck has access to ALL features from Vehicle and Truck" << endl;
-    cout << "2. Gradual specialization: Vehicle -> Truck -> RefrigeratedTruck" << endl;
-    cout << "3. Code reusability at each level" << endl;
-    cout << "4. Each level adds more specific functionality" << endl;
-    cout << "5. Easy to maintain and extend the hierarchy" << endl;
-    
-    cout << "\n--- Program Ending (Destructors will be called in reverse order) ---" << endl;
-    return 0;
+int main(){
+	cout<<"Fleet"<<endl;
+
+	Vehicle v("Honda","Civic",2022);
+	v.show();
+	v.addKm(5000);
+	cout<<"Age "<<v.age()<<endl;
+
+	Truck t("Ford","F150",2023,3.5);
+	t.show();
+	t.loadC(1.5);
+	t.loadC(1);
+	t.loadC(1.5);
+	t.addKm(150);
+	t.show();
+
+	RefTruck r("Volvo","FH16",2024,15,5);
+	r.show();
+	r.start();
+	r.setT(3);
+	r.loadP(5,"Veg");
+	r.loadP(4,"Dairy");
+	r.loadP(3.5,"Fruits");
+	cout<<"Dairy "<<(r.ok("Dairy")?"Yes":"No")<<endl;
+	cout<<"Frozen "<<(r.ok("Frozen")?"Yes":"No")<<endl;
+	r.addKm(350);
+	r.show();
+
+	r.unload(5);
+	r.unload(4);
+	r.stop();
+	r.show();
+
+	RefTruck r2("Merc","Actros",2024,20,-18);
+	r2.start();
+	r2.loadP(10,"Meat");
+	r2.loadP(8,"Ice");
+	r2.show();
+
+	return 0;
 }

@@ -1,5 +1,3 @@
-//Question: Q2 - Array of Rectangle objects with default arguments and destructor
-
 #include <iostream>
 using namespace std;
 

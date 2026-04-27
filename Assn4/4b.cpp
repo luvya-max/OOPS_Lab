@@ -1,5 +1,3 @@
-//Question: Q4b - Dynamic memory allocation for float variable using new and delete
-
 #include <iostream>
 using namespace std;
 

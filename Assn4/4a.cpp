@@ -1,5 +1,3 @@
-//Question: Q4a - Dynamic memory allocation for integer variable using new and delete
-
 #include <iostream>
 using namespace std;
 

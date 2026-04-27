@@ -1,19 +1,51 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-template <typename V>
-int findmax(V arr[], int size){
-    V temp=arr[0];
-    for(int i=0;i<size;i++){
-        if (arr[i]>temp){
-            temp=arr[i];
-        }
+class Student {
+    int id;
+    string name;
+    float marks;
+
+public:
+    void input(){
+        cout<<"Enter ID : ";
+        cin>>id;
+        cout<<"Enter Name : ";
+        cin>>name;
+        cout<<"Enter Marks : ";
+        cin>>marks;
     }
-    return temp;
-}
-int main(){
-    int size = 5;
-    float arr[]={5,6.4,31.2,34,5};
-    cout << findmax(arr, size);
+
+    void display(){
+        cout<< "\nID: " <<id;
+        cout<< "\nName: " <<name;
+        cout<< "\nMarks: " <<marks<< endl;
+    }
+
+    void writeToFile(ofstream &fout){
+        fout <<id<< " " <<name<< " " <<marks<< endl;
+    }
+
+    void readFromFile(ifstream &fin) {
+        fin>> id >>name>> marks;
+    }
+}s;
+
+int main() {
+    ofstream fout("student.txt");
+    s.input();
+    s.writeToFile(fout);
+    fout.close();
+    ifstream fin("student.txt");
+
+    Student s2;
+    s2.readFromFile(fin);
+    fin.close();
+
+
+    cout<<"Data is : ";
+    s2.display();
+
     return 0;
 }

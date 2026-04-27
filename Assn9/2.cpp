@@ -1,19 +1,16 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-template <typename V>
-int findmin(V arr[], int size){
-    V temp=arr[0];
-    for(int i=0;i<size;i++){
-        if (arr[i]<temp){
-            temp=arr[i];
+int main(){
+    ifstream f1("NOTES.txt");
+    int count=0; char ch;
+    while(f1.get(ch)){
+        if((ch>='a' && ch<='z')|| ch>='A' && ch<='Z'){
+            count++;
         }
     }
-    return temp;
-}
-int main(){
-    int size = 5;
-    int arr[]={9,6,31,34,5};
-    cout << findmin(arr, size);
+    cout << count;
+
     return 0;
 }

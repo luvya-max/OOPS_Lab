@@ -1,20 +1,19 @@
 #include <iostream>
 using namespace std;
 
-class B; // forward declaration
-
+class B;
 class A {
     int x;
-public:
-    A(int x) { this->x = x; }
+    public:
+        A(int x) { this->x = x; }
 
     friend int add(A, B);
 };
 
 class B {
     int y;
-public:
-    B(int y) { this->y = y; }
+    public:
+        B(int y) { this->y = y; }
 
     friend int add(A, B);
 };

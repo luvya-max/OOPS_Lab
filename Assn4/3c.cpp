@@ -1,5 +1,3 @@
-//Question: Q3c - Verify destructors do not allow any parameter
-
 #include <iostream>
 using namespace std;
 

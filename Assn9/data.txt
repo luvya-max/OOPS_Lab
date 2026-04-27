@@ -1,0 +1,3 @@
+This is a file that contains multiple lines
+Here is line 2 of this file
+File ends here.

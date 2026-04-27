@@ -1,217 +1,191 @@
-// Question 4: Various Types of Inheritance
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<string>
 using namespace std;
 
-// ============================================
-// 1. SINGLE INHERITANCE (One Base, One Derived)
-// ============================================
-class Vehicle {
+class Vehicle{
 protected:
-    string brand;
+	string brand;
 public:
-    Vehicle(string b) : brand(b) {}
-    void displayBrand() {
-        cout << "Brand: " << brand << endl;
-    }
+	Vehicle(string b){brand=b;}
+	void displayBrand(){
+		cout<<"Brand: "<<brand<<endl;
+	}
 };
 
-class Car : public Vehicle {
-private:
-    int numDoors;
+class Car:public Vehicle{
+	int numDoors;
 public:
-    Car(string b, int doors) : Vehicle(b), numDoors(doors) {}
-    void displayCar() {
-        displayBrand();
-        cout << "Number of Doors: " << numDoors << endl;
-    }
+	Car(string b,int d):Vehicle(b){
+		numDoors=d;
+	}
+	void displayCar(){
+		displayBrand();
+		cout<<"Doors: "<<numDoors<<endl;
+	}
 };
 
-// ============================================
-// 2. MULTIPLE INHERITANCE (Multiple Bases, One Derived)
-// ============================================
-class Engine {
+class Engine{
 protected:
-    int horsepower;
+	int hp;
 public:
-    Engine(int hp) : horsepower(hp) {}
-    void displayEngine() {
-        cout << "Horsepower: " << horsepower << endl;
-    }
+	Engine(int h){hp=h;}
+	void showEngine(){
+		cout<<"HP: "<<hp<<endl;
+	}
 };
 
-class Transmission {
+class Transmission{
 protected:
-    string type;
+	string type;
 public:
-    Transmission(string t) : type(t) {}
-    void displayTransmission() {
-        cout << "Transmission: " << type << endl;
-    }
+	Transmission(string t){type=t;}
+	void showTrans(){
+		cout<<"Trans: "<<type<<endl;
+	}
 };
 
-class SportsCar : public Engine, public Transmission {
-private:
-    string model;
+class SportsCar:public Engine,public Transmission{
+	string model;
 public:
-    SportsCar(string m, int hp, string trans) 
-        : Engine(hp), Transmission(trans), model(m) {}
-    void displaySportsCar() {
-        cout << "Model: " << model << endl;
-        displayEngine();
-        displayTransmission();
-    }
+	SportsCar(string m,int h,string t):Engine(h),Transmission(t){
+		model=m;
+	}
+	void show(){
+		cout<<"Model: "<<model<<endl;
+		showEngine();
+		showTrans();
+	}
 };
 
-// ============================================
-// 3. MULTILEVEL INHERITANCE (Chain: A -> B -> C)
-// ============================================
-class LivingBeing {
+class LivingBeing{
 protected:
-    bool isAlive;
+	bool alive;
 public:
-    LivingBeing() : isAlive(true) {}
-    void breathe() {
-        cout << "Breathing..." << endl;
-    }
+	LivingBeing(){alive=true;}
+	void breathe(){
+		cout<<"Breathing"<<endl;
+	}
 };
 
-class Animal : public LivingBeing {
+class Animal:public LivingBeing{
 protected:
-    string species;
+	string sp;
 public:
-    Animal(string s) : species(s) {}
-    void eat() {
-        cout << species << " is eating" << endl;
-    }
+	Animal(string s){sp=s;}
+	void eat(){
+		cout<<sp<<" eating"<<endl;
+	}
 };
 
-class Dog : public Animal {
-private:
-    string name;
+class Dog:public Animal{
+	string name;
 public:
-    Dog(string n) : Animal("Canine"), name(n) {}
-    void bark() {
-        cout << name << " says: Woof!" << endl;
-    }
-    void displayDog() {
-        breathe();
-        eat();
-        bark();
-    }
+	Dog(string n):Animal("Dog"){
+		name=n;
+	}
+	void show(){
+		breathe();
+		eat();
+		cout<<name<<" woof"<<endl;
+	}
 };
 
-// ============================================
-// 4. HIERARCHICAL INHERITANCE (One Base, Multiple Derived)
-// ============================================
-class Shape {
+class Shape{
 protected:
-    string color;
+	string color;
 public:
-    Shape(string c) : color(c) {}
-    void displayColor() {
-        cout << "Color: " << color << endl;
-    }
+	Shape(string c){color=c;}
+	void showColor(){
+		cout<<"Color: "<<color<<endl;
+	}
 };
 
-class Circle : public Shape {
-private:
-    double radius;
+class Circle:public Shape{
+	double r;
 public:
-    Circle(string c, double r) : Shape(c), radius(r) {}
-    void displayCircle() {
-        cout << "Circle - ";
-        displayColor();
-        cout << "Radius: " << radius << endl;
-    }
+	Circle(string c,double x):Shape(c){
+		r=x;
+	}
+	void show(){
+		cout<<"Circle ";
+		showColor();
+		cout<<"R="<<r<<endl;
+	}
 };
 
-class Rectangle : public Shape {
-private:
-    double length, width;
+class Rectangle:public Shape{
+	double l,w;
 public:
-    Rectangle(string c, double l, double w) : Shape(c), length(l), width(w) {}
-    void displayRectangle() {
-        cout << "Rectangle - ";
-        displayColor();
-        cout << "Length: " << length << ", Width: " << width << endl;
-    }
+	Rectangle(string c,double a,double b):Shape(c){
+		l=a;w=b;
+	}
+	void show(){
+		cout<<"Rect ";
+		showColor();
+		cout<<"L="<<l<<" W="<<w<<endl;
+	}
 };
 
-// ============================================
-// 5. HYBRID INHERITANCE (Combination of multiple types)
-// ============================================
-class Student {
+class Student{
 protected:
-    string studentName;
-    int rollNo;
+	string name;
+	int roll;
 public:
-    Student(string name, int roll) : studentName(name), rollNo(roll) {}
+	Student(string n,int r){
+		name=n;roll=r;
+	}
 };
 
-class Sports {
+class Sports{
 protected:
-    int sportsScore;
+	int sScore;
 public:
-    Sports(int score) : sportsScore(score) {}
+	Sports(int s){sScore=s;}
 };
 
-class Exam : public Student {
+class Exam:public Student{
 protected:
-    int examScore;
+	int eScore;
 public:
-    Exam(string name, int roll, int score) : Student(name, roll), examScore(score) {}
+	Exam(string n,int r,int e):Student(n,r){
+		eScore=e;
+	}
 };
 
-class Result : public Exam, public Sports {
+class Result:public Exam,public Sports{
 public:
-    Result(string name, int roll, int eScore, int sScore) 
-        : Exam(name, roll, eScore), Sports(sScore) {}
-    
-    void displayResult() {
-        cout << "Student: " << studentName << endl;
-        cout << "Roll No: " << rollNo << endl;
-        cout << "Exam Score: " << examScore << endl;
-        cout << "Sports Score: " << sportsScore << endl;
-        cout << "Total Score: " << (examScore + sportsScore) << endl;
-    }
+	Result(string n,int r,int e,int s):Exam(n,r,e),Sports(s){}
+	void show(){
+		cout<<name<<endl;
+		cout<<roll<<endl;
+		cout<<eScore<<endl;
+		cout<<sScore<<endl;
+		cout<<"Total "<<eScore+sScore<<endl;
+	}
 };
 
-// ============================================
-// MAIN FUNCTION
-// ============================================
-int main() {
-    cout << "========================================" << endl;
-    cout << "1. SINGLE INHERITANCE" << endl;
-    cout << "========================================" << endl;
-    Car myCar("Toyota", 4);
-    myCar.displayCar();
-    
-    cout << "\n========================================" << endl;
-    cout << "2. MULTIPLE INHERITANCE" << endl;
-    cout << "========================================" << endl;
-    SportsCar ferrari("Ferrari F8", 710, "Automatic");
-    ferrari.displaySportsCar();
-    
-    cout << "\n========================================" << endl;
-    cout << "3. MULTILEVEL INHERITANCE" << endl;
-    cout << "========================================" << endl;
-    Dog myDog("Buddy");
-    myDog.displayDog();
-    
-    cout << "\n========================================" << endl;
-    cout << "4. HIERARCHICAL INHERITANCE" << endl;
-    cout << "========================================" << endl;
-    Circle circle1("Red", 5.5);
-    circle1.displayCircle();
-    Rectangle rect1("Blue", 10.0, 5.0);
-    rect1.displayRectangle();
-    
-    cout << "\n========================================" << endl;
-    cout << "5. HYBRID INHERITANCE" << endl;
-    cout << "========================================" << endl;
-    Result student1("John Doe", 101, 85, 90);
-    student1.displayResult();
-    
-    return 0;
+int main(){
+	cout<<"Single"<<endl;
+	Car c("Toyota",4);
+	c.displayCar();
+
+	cout<<"\nMultiple"<<endl;
+	SportsCar s("Ferrari",700,"Auto");
+	s.show();
+
+	cout<<"\nMultilevel"<<endl;
+	Dog d("Buddy");
+	d.show();
+
+	cout<<"\nHierarchical"<<endl;
+	Circle c1("Red",5.5);
+	c1.show();
+	Rectangle r1("Blue",10,5);
+	r1.show();
+
+	cout<<"\nHybrid"<<endl;
+	Result r("John",101,85,90);
+	r.show();
+
+	return 0;
 }

@@ -1,5 +1,3 @@
-//Question: Q3b - Verify there cannot be more than one destructor in a class
-
 #include <iostream>
 using namespace std;
 

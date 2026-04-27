@@ -1,5 +1,3 @@
-//Question: Q1 - Rectangle class with three constructors
-
 #include <iostream>
 using namespace std;
 

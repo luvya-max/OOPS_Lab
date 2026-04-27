@@ -1,5 +1,3 @@
-//Question: Q4d - Dynamic memory allocation for float array using new and delete
-
 #include <iostream>
 using namespace std;
 

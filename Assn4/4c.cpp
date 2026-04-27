@@ -1,5 +1,3 @@
-//Question: Q4c - Dynamic memory allocation for integer array using new and delete
-
 #include <iostream>
 using namespace std;
 
